@@ -5,7 +5,7 @@ import { IManagementTeam } from "./I-ManagementTeam";
 export class ManagementTeam implements IManagementTeam{
     private static footballTeams:FootballTeam[] = [];
     private static id: number = 0;
-    // tìm kiếm theo tên câu lạc bộ
+    // tìm kiếm theo tên câu lạc bộ 
     findByTeamname(nameTeam: string): FootballTeam | null {
         for(let i = 0; i< ManagementTeam.footballTeams.length;i++){
             if(nameTeam === ManagementTeam.footballTeams[i].$nameTeam){
@@ -48,7 +48,7 @@ export class ManagementTeam implements IManagementTeam{
        }
     }
     // loại bỏ theo id
-    removeById(id: number, t: FootballTeam): void {
+    removeById(id: number): void {
         let index = this.findById(id);
         if(index != -1){
          ManagementTeam.footballTeams.splice(index, 1);

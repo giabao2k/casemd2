@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ManagementTeam = void 0;
 const role_1 = require("../../enum/role");
 class ManagementTeam {
-    // tìm kiếm theo tên câu lạc bộ
+    // tìm kiếm theo tên câu lạc bộ 
     findByTeamname(nameTeam) {
         for (let i = 0; i < ManagementTeam.footballTeams.length; i++) {
             if (nameTeam === ManagementTeam.footballTeams[i].$nameTeam) {
@@ -43,7 +43,7 @@ class ManagementTeam {
         }
     }
     // loại bỏ theo id
-    removeById(id, t) {
+    removeById(id) {
         let index = this.findById(id);
         if (index != -1) {
             ManagementTeam.footballTeams.splice(index, 1);

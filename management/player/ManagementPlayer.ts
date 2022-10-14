@@ -1,10 +1,11 @@
 import { Role } from "../../enum/role";
 import { FootballPlayer } from "../../model/FootballPlayer";
+import { ManagementTeam } from "../team/ManagementTeam";
 import { IManagementPlayer } from "./I-ManagementPlayer";
 
 export class ManagementPlayer implements IManagementPlayer{
     private static footballPlayers: FootballPlayer[] = [];
-    private static id: number = 1;
+    private static id: number = 0;
     // tìm kiếm theo tên cầu thủ
     findByNamePlayer(namePlayer: string): FootballPlayer | null {
         for(let i = 1; i < ManagementPlayer.footballPlayers.length;i++){
@@ -28,9 +29,12 @@ export class ManagementPlayer implements IManagementPlayer{
     // tạo mới
     createNew(t: FootballPlayer): void {
         ManagementPlayer.id++ ;
-        t.$id = ManagementPlayer.id ;
+        t.$id = ManagementPlayer.id; 
         t.role = Role.COATCH;
-       ManagementPlayer.footballPlayers.push(t)
+       ManagementPlayer.footballPlayers.push(t);
+    //    console.log(ManagementPlayer.footballPlayers);
+    //    ManagementTeam.findByTeamname(t.$teamPlayer);
+
     }
     // cập nhật theo id
     updateById(id: number, t: FootballPlayer): void {
@@ -40,7 +44,7 @@ export class ManagementPlayer implements IManagementPlayer{
         }
     }
     // loại bỏ theo id
-    removeById(id: number, t: FootballPlayer): void {
+    removeById(id: number): void {
         let index = this.findById(id);
         if(index != -1){
          ManagementPlayer.footballPlayers.splice(index, 1);
@@ -56,6 +60,21 @@ export class ManagementPlayer implements IManagementPlayer{
             }
         }
         return index;
+    }
+
+    findByNameTeam(nameTeam: string): FootballPlayer[] {
+        let rs = [];
+        for (let i = 0; i < ManagementPlayer.footballPlayers.length; i++) {
+            if (ManagementPlayer.footballPlayers[i].$teamPlayer == nameTeam ) {
+                rs.push(ManagementPlayer.footballPlayers[i]);
+
+
+            }
+        }
+        return rs;
+    }
+    resetPlayer(){
+        return ManagementPlayer.footballPlayers = [];
     }
 
 }

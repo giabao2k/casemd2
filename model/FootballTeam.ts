@@ -1,5 +1,4 @@
 import { FootballPlayer } from "./FootballPlayer";
-
 export class FootballTeam {
     private id: number = 1;
     private _role: number = 2;

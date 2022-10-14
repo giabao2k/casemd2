@@ -1,4 +1,5 @@
 import * as rl from 'readline-sync'
+import { CLIENT_RENEG_LIMIT } from 'tls';
 import { ManagementPlayer } from '../management/player/ManagementPlayer';
 import { ManagementTeam } from '../management/team/ManagementTeam';
 import { FootballPlayer } from '../model/FootballPlayer';
@@ -61,9 +62,15 @@ export class AdminMenu{
                     let age = +rl.question('Nhập tuổi của cầu thủ:');
                     let teamPlayer = rl.question('Nhập đội bóng cầu thủ đá:');
                     let player = new FootballPlayer(namePlayer,clothersNumber,phoneNumber,location,age,teamPlayer);
+
                     managementPlayers.createNew(player);
                     break;
-                  }  
+                  }
+                  case 3:{
+                    let id = +rl.question('Nhập id cầu thủ muốn xoá:');
+                    managementPlayers.removeById(id);
+                    break;
+                  }
                 }
             }while(choice2 != 0)
         }
@@ -80,7 +87,18 @@ export class AdminMenu{
                 switch(choice1){
                     case 1:{
                         console.log("---Danh sách đội bóng---");
-                        console.log(managementTeams.getAll());
+                        let tmpTeams = managementTeams.getAll();
+                        tmpTeams.forEach(team => {
+                            let players = managementPlayers.findByNameTeam(team.$nameTeam);
+                            players.forEach(player => {
+                                managementPlayers.resetPlayer();
+                                team.$footballPlayer.push(player)
+
+                            });
+                            console.log(`danh sách các cầu thủ trong team ${team.$nameTeam}`,team.$footballPlayer)
+                        });
+                        console.log("hiển thị tất cả thông tin của đội bóng",tmpTeams)
+                        
                         break;
                     }
                     case 2:{
@@ -92,20 +110,34 @@ export class AdminMenu{
                         
                         let team = new FootballTeam(nameTeam,homeShirtColor,awayShirtColor,coatch,president)
                         managementTeams.createNew(team);
+                        // console.log(managementTeams.resetFootballTeam());
+                        // let player = managementPlayers.getAll();
+                        // let teamPlayer = managementTeams.getAll();
 
-                        let player = managementPlayers.getAll();
-                        let teamPlayer = managementTeams.getAll();
-                                // tim doi bong co ten = nameTeam trong danh sach doi bong
-
-                                // thu hien push cau thu 
-
-                               /// managementTeams.addUserTopListPlayer(player[i])
-                            //    team.$footballPlayer.push(player[i]);
-                           
-                            
-                        
                         break;
                     }
+                    case 3:{
+                        let id = +rl.question('Nhập id clb muốn xoá:')
+                        managementTeams.removeById(id);
+                        break;
+                    }  
+                    case 4:{
+                        let id = +rl.question('Nhập id clb muốn update:');
+                        if(managementTeams.findById(id) != -1){
+                        let nameTeam = rl.question('Nhập tên đội bóng:')
+                        let homeShirtColor = rl.question('Nhập màu áo sân nhà:')
+                        let awayShirtColor = rl.question('Nhập màu áo sân khách:')
+                        let coatch = rl.question('Nhập tên huấn luyện viên:')
+                        let president = rl.question('Nhập tên chủ tịch:')
+                        
+                        let team = new FootballTeam(nameTeam,homeShirtColor,awayShirtColor,coatch,president)
+                        managementTeams.updateById(id,team);
+                        }else{
+                            console.log(`Không tìm thấy clb có id = ${id}`);
+                        }
+                        break;
+                    }
+                    
                 }
 
             }while(choice1 != 0)

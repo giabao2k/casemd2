@@ -90,6 +90,11 @@ class AdminMenu {
                         managementPlayers.createNew(player);
                         break;
                     }
+                    case 3: {
+                        let id = +rl.question('Nhập id cầu thủ muốn xoá:');
+                        managementPlayers.removeById(id);
+                        break;
+                    }
                 }
             } while (choice2 != 0);
         }
@@ -105,7 +110,16 @@ class AdminMenu {
                 switch (choice1) {
                     case 1: {
                         console.log("---Danh sách đội bóng---");
-                        console.log(managementTeams.getAll());
+                        let tmpTeams = managementTeams.getAll();
+                        tmpTeams.forEach(team => {
+                            let players = managementPlayers.findByNameTeam(team.$nameTeam);
+                            players.forEach(player => {
+                                managementPlayers.resetPlayer();
+                                team.$footballPlayer.push(player);
+                            });
+                            console.log(`danh sách các cầu thủ trong team ${team.$nameTeam}`, team.$footballPlayer);
+                        });
+                        console.log("hiển thị tất cả thông tin của đội bóng", tmpTeams);
                         break;
                     }
                     case 2: {
@@ -116,12 +130,30 @@ class AdminMenu {
                         let president = rl.question('Nhập tên chủ tịch:');
                         let team = new FootballTeam_1.FootballTeam(nameTeam, homeShirtColor, awayShirtColor, coatch, president);
                         managementTeams.createNew(team);
-                        let player = managementPlayers.getAll();
-                        let teamPlayer = managementTeams.getAll();
-                        // tim doi bong co ten = nameTeam trong danh sach doi bong
-                        // thu hien push cau thu 
-                        /// managementTeams.addUserTopListPlayer(player[i])
-                        //    team.$footballPlayer.push(player[i]);
+                        // console.log(managementTeams.resetFootballTeam());
+                        // let player = managementPlayers.getAll();
+                        // let teamPlayer = managementTeams.getAll();
+                        break;
+                    }
+                    case 3: {
+                        let id = +rl.question('Nhập id clb muốn xoá:');
+                        managementTeams.removeById(id);
+                        break;
+                    }
+                    case 4: {
+                        let id = +rl.question('Nhập id clb muốn update:');
+                        if (managementTeams.findById(id) != -1) {
+                            let nameTeam = rl.question('Nhập tên đội bóng:');
+                            let homeShirtColor = rl.question('Nhập màu áo sân nhà:');
+                            let awayShirtColor = rl.question('Nhập màu áo sân khách:');
+                            let coatch = rl.question('Nhập tên huấn luyện viên:');
+                            let president = rl.question('Nhập tên chủ tịch:');
+                            let team = new FootballTeam_1.FootballTeam(nameTeam, homeShirtColor, awayShirtColor, coatch, president);
+                            managementTeams.updateById(id, team);
+                        }
+                        else {
+                            console.log(`Không tìm thấy clb có id = ${id}`);
+                        }
                         break;
                     }
                 }

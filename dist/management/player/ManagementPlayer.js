@@ -31,6 +31,8 @@ class ManagementPlayer {
         t.$id = ManagementPlayer.id;
         t.role = role_1.Role.COATCH;
         ManagementPlayer.footballPlayers.push(t);
+        //    console.log(ManagementPlayer.footballPlayers);
+        //    ManagementTeam.findByTeamname(t.$teamPlayer);
     }
     // cập nhật theo id
     updateById(id, t) {
@@ -40,7 +42,7 @@ class ManagementPlayer {
         }
     }
     // loại bỏ theo id
-    removeById(id, t) {
+    removeById(id) {
         let index = this.findById(id);
         if (index != -1) {
             ManagementPlayer.footballPlayers.splice(index, 1);
@@ -57,7 +59,19 @@ class ManagementPlayer {
         }
         return index;
     }
+    findByNameTeam(nameTeam) {
+        let rs = [];
+        for (let i = 0; i < ManagementPlayer.footballPlayers.length; i++) {
+            if (ManagementPlayer.footballPlayers[i].$teamPlayer == nameTeam) {
+                rs.push(ManagementPlayer.footballPlayers[i]);
+            }
+        }
+        return rs;
+    }
+    resetPlayer() {
+        return ManagementPlayer.footballPlayers = [];
+    }
 }
 exports.ManagementPlayer = ManagementPlayer;
 ManagementPlayer.footballPlayers = [];
-ManagementPlayer.id = 1;
+ManagementPlayer.id = 0;
